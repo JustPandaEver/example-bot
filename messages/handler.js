@@ -143,7 +143,7 @@ module.exports = {
                         .then((res) => conn.sendSticker(from, res, msg))
                         .catch((err) => {
                             console.log(err)
-                            conn.reply(from, `Maaf terjadi kesalahan`, msg)
+                            conn.reply(from, require('util').format(err), msg)
                         })
                 } else {
                     let tmt = `Kirim/reply image/video dengan caption ${command}`
@@ -161,7 +161,7 @@ module.exports = {
                             .then((res) => conn.sendVideo(from, res, 'Nih kak', msg))
                             .catch((err) => {
                                 console.log(err)
-                                conn.reply(from, `Maaf terjadi kesalahan`, msg)
+                                conn.reply(from, require('util').format(err), msg)
                             })
                     } else {
                         const media = await quotedMsg.toBuffer()
@@ -171,7 +171,7 @@ module.exports = {
                             })
                             .catch((err) => {
                                 console.log(err)
-                                conn.reply(from, `Maaf terjadi kesalahan`, msg)
+                                conn.reply(from, require('util').format(err), msg)
                             })
                     }
                 } else {
@@ -192,7 +192,7 @@ module.exports = {
                     })
                     .catch(err => {
                         console.log(err)
-                        conn.reply(from, global.db.mess.error.api, msg)
+                        conn.reply(from, require('util').format(err), msg)
                     })
             }
             break
@@ -208,7 +208,7 @@ module.exports = {
                     })
                     .catch(err => {
                         console.log(err)
-                        conn.reply(from, global.db.mess.error.api, msg)
+                        conn.reply(from, require('util').format(err), msg)
                     })
             }
             break
@@ -221,7 +221,7 @@ module.exports = {
                     .then(res => conn.sendVideo(from, res.nowm, res.caption, msg))
                     .catch(err => {
                         console.log(err)
-                        conn.reply(from, global.db.mess.error.api, msg)
+                        conn.reply(from, require('util').format(err), msg)
                     })
             }
             break
@@ -233,7 +233,7 @@ module.exports = {
                     .then(res => conn.sendVideo(from, res.wm, res.caption, msg))
                     .catch(err => {
                         console.log(err)
-                        conn.reply(from, global.db.mess.error.api, msg)
+                        conn.reply(from, require('util').format(err), msg)
                     })
             }
             break
@@ -245,11 +245,11 @@ module.exports = {
                     .then(res => {
                         toAudio(res.nowm)
                             .then(res => conn.sendAudio(from, res, msg))
-                            .catch(err => conn.reply(from, global.db.mess.error.api, msg))
+                            .catch(err => conn.reply(from, require('util').format(err), msg))
                     })
                     .catch(err => {
                         console.log(err)
-                        conn.reply(from, global.db.mess.error.api, msg)
+                        conn.reply(from, require('util').format(err), msg)
                     })
             }
             break
@@ -261,7 +261,7 @@ module.exports = {
                     .then(res => conn.sendAudio(from, res, msg))
                     .catch(err => {
                         console.log(err)
-                        conn.reply(from, global.db.mess.error.api, msg)
+                        conn.reply(from, require('util').format(err), msg)
                     })
             }
             break
@@ -274,7 +274,7 @@ module.exports = {
                     .then(res => conn.sendAudio(from, res, msg))
                     .catch(err => {
                         console.log(err)
-                        conn.reply(from, global.db.mess.error.api, msg)
+                        conn.reply(from, require('util').format(err), msg)
                     })
             }
             break
@@ -286,7 +286,7 @@ module.exports = {
                     .then(res => conn.sendImage(from, res, '*Pencarian :* ' + q + '\n*URL :* ' + res, msg))
                     .catch(err => {
                         console.log(err)
-                        conn.reply(from, global.db.mess.error.api, msg)
+                        conn.reply(from, require('util').format(err), msg)
                     })
             }
             break
@@ -297,7 +297,7 @@ module.exports = {
                 await conn.sendImage(from, global.config.api + '/screenshot?apikey=' + global.config.apikey + '&url=' + args[1], '', msg)
                     .catch(err => {
                         console.log(err)
-                        conn.reply(from, global.db.mess.error.api, msg)
+                        conn.reply(from, require('util').format(err), msg)
                     })
             }
             break
@@ -309,7 +309,7 @@ module.exports = {
                     .then(res => conn.reply(from, res, msg))
                     .catch(err => {
                         console.log(err)
-                        conn.reply(from, global.db.mess.error.api, msg)
+                        conn.reply(from, require('util').format(err), msg)
                     })
             }
             break
@@ -320,7 +320,7 @@ module.exports = {
                     .then(res => conn.sendImage(from, res.image, res.caption, msg))
                     .catch(err => {
                         console.log(err)
-                        conn.reply(from, 'User tidak ditemukan', msg)
+                        conn.reply(from, require('util').format(err), msg)
                     })
             }
             break
@@ -341,7 +341,7 @@ module.exports = {
                     })
                     .catch(err => {
                         console.log(err)
-                        conn.reply(from, "Error, mungkin private", msg)
+                        conn.reply(from, require('util').format(err), msg)
                     })
             }
             break
@@ -354,7 +354,7 @@ module.exports = {
                     .then(res => conn.sendImage(from, res, res, msg))
                     .catch(err => {
                         console.log(err)
-                        conn.reply(from, global.db.mess.error.api, msg)
+                        conn.reply(from, require('util').format(err), msg)
                     })
             }
             break
@@ -365,7 +365,7 @@ module.exports = {
                     .then(res => conn.reply(from, res, msg))
                     .catch(err => {
                         console.log(err)
-                        conn.reply(from, global.db.mess.error.api, msg)
+                        conn.reply(from, require('util').format(err), msg)
                     })
             }
             break
@@ -376,7 +376,7 @@ module.exports = {
                     .then(res => conn.reply(from, res, msg))
                     .catch(err => {
                         console.log(err)
-                        conn.reply(from, global.db.mess.error.api, msg)
+                        conn.reply(from, require('util').format(err), msg)
                     })
             }
             break
@@ -392,7 +392,7 @@ module.exports = {
                     })
                     .catch(err => {
                         console.log(err)
-                        conn.reply(from, global.db.mess.error.api, msg)
+                        conn.reply(from, require('util').format(err), msg)
                     })
             }
             break
@@ -405,13 +405,14 @@ module.exports = {
                     .then(res => conn.reply(from, res, msg))
                     .catch(err => {
                         console.log(err)
-                        conn.reply(from, global.db.mess.error.api, msg)
+                        conn.reply(from, require('util').format(err), msg)
                     })
             }
             break
             }
         } catch (err) {
             console.log(err)
+            conn.reply(conn.user.jid, require('util').format(err), null)
         }
     }
 }
