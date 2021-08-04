@@ -12,7 +12,8 @@ const {
 const {
     default: Axios
 } = require("axios");
-
+const moment = require("moment-timezone")
+moment.tz.setDefault("Asia/Jakarta").locale("id")
 const {
     color
 } = require("../lib/color");
