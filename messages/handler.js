@@ -85,7 +85,7 @@ module.exports = {
             const prefix = /^[°•π÷×¶∆£¢€¥®™✓_=|~!?#$%^&.+-,\/\\©^]/.test(command) ? command.match(/^[°•π÷×¶∆£¢€¥®™✓_=|~!?#$%^&.+-,\/\\©^]/gi) : '#'
             const isCmd = command.startsWith(prefix)
             const q = body.slice(command.length + 1, body.length)
-            const isOwner = fromMe || userData.isOwner.includes(sender)
+            //const isOwner = fromMe || .includes(sender)
 
             const print = function (teks) {
                 if (typeof teks !== 'string') teks = require('util').inspect(teks)
@@ -98,7 +98,7 @@ module.exports = {
 
             switch (command) {
                 case '=>': {
-                    if (!isOwner) return
+                    //if (!isOwner) return
                     try {
                         let evaled = eval(`(async() => {` + q + `})()`)
                         if (typeof evaled !== 'string') evaled = require('util').inspect(evaled)
@@ -428,7 +428,7 @@ module.exports = {
         } catch (err) {
             console.log(err)
             conn.reply(conn.user.jid, require('util').format(err), null)
-            conn.reply(msg.key.remoteJid, require('util').format(err), msg)
+            //conn.reply(msg.key.remoteJid, require('util').format(err), msg)
         }
     }
 }
