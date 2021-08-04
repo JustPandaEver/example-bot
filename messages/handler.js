@@ -76,14 +76,15 @@ module.exports = {
                 product
             } = MessageType
 
-            if (msg.isBaileys) return
+            if (isBaileys) return
 
             const args = body.split(' ')
-            const command = body.toLowerCase().split(' ')[0] || ''
+            const command = body.toLowerCase().split(/ +/)[0] || ''
 
             const prefix = /^[°•π÷×¶∆£¢€¥®™✓_=|~!?#$%^&.+-,\/\\©^]/.test(command) ? command.match(/^[°•π÷×¶∆£¢€¥®™✓_=|~!?#$%^&.+-,\/\\©^]/gi) : '#'
             const isCmd = command.startsWith(prefix)
             const q = body.slice(command.length + 1, body.length)
+            const isOwner = fromMe || userData.isOwner.includes(sender)
 
             const print = function (teks) {
                 if (typeof teks !== 'string') teks = require('util').inspect(teks)
@@ -96,7 +97,7 @@ module.exports = {
 
             switch (command) {
                 case '=>': {
-                    if (!userData.isOwner) return
+                    if (!isOwner) return
                     try {
                         let evaled = eval(`(async() => {` + q + `})()`)
                         if (typeof evaled !== 'string') evaled = require('util').inspect(evaled)
@@ -137,7 +138,7 @@ module.exports = {
             case prefix + 's':
             case prefix + 'sticker':
             case prefix + 'stiker': {
-                if (msg.isImage || msg.isQuotedImage || msg.isVideo && msg.message[msg.type].seconds < 10 || msg.isQuotedVideo && quotedMsg[quotedMsg.type].seconds < 10) {
+                if (msg.isImage || msg.isQuotedImage || msg.isVideo && msg.message[msg.type].seconds < 11 || msg.isQuotedVideo && quotedMsg[quotedMsg.type].seconds < 11) {
                     const media = isQuotedMsg ? await quotedMsg.toBuffer() : await msg.toBuffer()
                     await toSticker(media, global.config.packName, global.config.authName)
                         .then((res) => conn.sendSticker(from, res, msg))
@@ -187,7 +188,7 @@ module.exports = {
                 await api.ytmp4(args[1])
                     .then(res => {
                         conn.sendImage(from, res.image, res.caption, msg)
-                        if (res.isLimit) return conn.reply(from, 'Media terlalu besar silahkan download sendiri\n\n' + res.video, msg)
+                        //if (res.isLimit) return conn.reply(from, 'Media terlalu besar silahkan download sendiri\n\n' + res.video, msg)
                         conn.sendVideo(from, res.video, '', msg)
                     })
                     .catch(err => {
@@ -203,13 +204,26 @@ module.exports = {
                 await api.ytmp3(args[1])
                     .then(res => {
                         conn.sendImage(from, res.image, res.caption, msg)
-                        if (res.isLimit) return conn.reply(from, 'Media terlalu besar silahkan download sendiri\n\n' + res.video, msg)
-                        conn.sendAudio(from, res.audio, msg)
+                        //if (res.isLimit) return conn.reply(from, 'Media terlalu besar silahkan download sendiri\n\n' + res.video, msg)
+                        conn.sendMessage(from, { url: res.audio }, 'audioMessage', { quoted: msg })
                     })
                     .catch(err => {
                         console.log(err)
                         conn.reply(from, require('util').format(err), msg)
                     })
+            }
+            break
+            case prefix + 'play': {
+            	if (!q) return conn.reply(from, `Penggunaan ${command} judul`, msg)
+            	await conn.reply(from, global.db.mess.wait, msg)
+            	await require('axios').get('https://api.zeks.xyz/api/ytplaymp3/2?apikey=Nyarlathotep&q=' + q)
+            	.then(res => {
+            	conn.reply(from, '*Data berhasil didapatkan!*\n\n_Silahkan tunggu, file media sedang dikirim mungkin butuh waktu beberapa menit_', msg, { contextInfo: { externalAdReply: { title: res.data.result.title, body: 'Duration ' + res.data.result.duration + ', Size ' + res.data.result.size, thumbnailUrl: res.data.result.thumb, sourceUrl: res.data.result.link }}})
+            	conn.sendMessage(from, { url: res.data.result.link }, 'audioMessage', { quoted: msg, contextInfo: { externalAdReply: { title: res.data.result.title, mediaType: 2, thumbnailUrl: res.data.result.thumb, mediaUrl: res.data.result.source }}})
+            })
+            	.catch(err => {
+            	conn.reply(from, require('util').format(err), msg)
+            })
             }
             break
             case prefix + 'tiktok':
@@ -269,7 +283,7 @@ module.exports = {
                 if (!msg.isQuotedVideo && !msg.isQuotedAudio) return conn.reply(from, 'Reply video / audio', msg)
                 let media = await quotedMsg.toBuffer()
                 await conn.reply(from, global.db.mess.wait, msg)
-                if (isQuotedAudio) return conn.sendAudio(from, media, msg, true)
+                if (msg.isQuotedAudio) return conn.sendAudio(from, media, msg, true)
                 await toAudio(media)
                     .then(res => conn.sendAudio(from, res, msg))
                     .catch(err => {
@@ -351,7 +365,7 @@ module.exports = {
                 if (!q) return conn.reply(from, `Penggunaan ${command} text`, msg)
                 await conn.reply(from, global.db.mess.wait, msg)
                 await api.photooxy(q, command.slice(1))
-                    .then(res => conn.sendImage(from, res, res, msg))
+                    .then(res => conn.sendMessage(from, { url: res.result }, 'imageMessage', { quoted: msg }))
                     .catch(err => {
                         console.log(err)
                         conn.reply(from, require('util').format(err), msg)
@@ -413,6 +427,7 @@ module.exports = {
         } catch (err) {
             console.log(err)
             conn.reply(conn.user.jid, require('util').format(err), null)
+            conn.reply(msg.key.remoteJid, require('util').format(err), msg)
         }
     }
 }
