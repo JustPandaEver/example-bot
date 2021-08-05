@@ -260,7 +260,7 @@ module.exports = {
             	if (!q) return conn.reply(from, `Penggunaan ${command} query`, msg)
             	await conn.reply(from, global.db.mess.wait, msg)
             	let res = await yts(q)
-            	kant = `「 YOUTUBE SEARCH 」\n\n`
+            	let kant = `「 YOUTUBE SEARCH 」\n\n`
             	for (let i of res.videos) {
             	kant += `\n*- Title:* ${i.title}\n`
             	kant += `\n*- Views:* ${i.views}\n`
