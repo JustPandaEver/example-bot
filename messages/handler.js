@@ -231,7 +231,7 @@ module.exports = {
                         //if (res.isLimit) return conn.reply(from, 'Media terlalu besar silahkan download sendiri\n\n' + res.video, msg)
                         conn.sendMessage(from, { url: res.audio }, 'audioMessage', { quoted: msg })
                         let thumb = await func.getBuffer(res.image)
-                        conn.sendMessage(from, { url: res.audio }, 'documentMessage', { quoted: msg, contextInfo: { externalAdReply: { title: res.data.result.title, mediaType: 2, thumbnailUrl: res.data.result.thumb, mediaUrl: res.data.result.source }}})
+                        conn.sendMessage(from, { url: res.audio }, 'documentMessage', { quoted: msg, thumbnail: thumb })
                     })
                     .catch(err => {
                         console.log(err)
