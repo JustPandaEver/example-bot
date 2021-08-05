@@ -12,6 +12,7 @@ const {
 const {
     default: Axios
 } = require("axios");
+const fetch = require("node-fetch");
 const moment = require("moment-timezone")
 moment.tz.setDefault("Asia/Jakarta").locale("id")
 const {
@@ -25,7 +26,7 @@ const {
     toAudio
 } = require("../lib/convert");
 const api = require("../lib/api");
-
+const { jadibot, stopjadibot, listjadibot } = require("../lib/jadibot.js")
 const isUrl = (url) => {
     return url.match(new RegExp(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&/=]*)/, 'gi'))
 }
@@ -81,11 +82,11 @@ module.exports = {
 
             const args = body.split(' ')
             const command = body.toLowerCase().split(/ +/)[0] || ''
-
+.
             const prefix = /^[°•π÷×¶∆£¢€¥®™✓_=|~!?#$%^&.+-,\/\\©^]/.test(command) ? command.match(/^[°•π÷×¶∆£¢€¥®™✓_=|~!?#$%^&.+-,\/\\©^]/gi) : '#'
             const isCmd = command.startsWith(prefix)
             const q = body.slice(command.length + 1, body.length)
-            //const isOwner = fromMe || .includes(sender)
+            const isOwner = fromMe ||1 userData.isOwner
 
             const print = function (teks) {
                 if (typeof teks !== 'string') teks = require('util').inspect(teks)
@@ -122,7 +123,6 @@ module.exports = {
                 tmt += `${prefix}tiktokmusic\n`
                 tmt += `${prefix}tomp3\n`
                 tmt += `${prefix}toptt\n`
-                tmt += `${prefix}tourl\n`
                 tmt += `${prefix}pinterest\n`
                 tmt += `${prefix}igstalk\n`
                 tmt += `${prefix}igdl\n`
@@ -136,7 +136,7 @@ module.exports = {
                 await conn.reply(from, tmt, msg)
             }
             break
-            case prefix + 's':
+            /*case prefix + 's':
             case prefix + 'sticker':
             case prefix + 'stiker': {
                 if (msg.isImage || msg.isQuotedImage || msg.isVideo && msg.message[msg.type].seconds < 11 || msg.isQuotedVideo && quotedMsg[quotedMsg.type].seconds < 11) {
@@ -152,7 +152,31 @@ module.exports = {
                     conn.reply(from, tmt, msg)
                 }
             }
-            break
+            break*/
+            case prefix + 's':
+            case prefix + 'sgif':
+			case prefix + 'stiker':
+			case prefix + 'sticker': {
+				let [pack, author] = q.split`|`
+				if (!author) { isGroup ? groupMetadata.subject : author }
+					if (msg.isImage || msg.isQuotedImage) {
+						img = isQuotedMsg ? await quotedMsg.toBuffer() : await msg.toBuffer()
+						if (!img) return conn.reply(from, `Reply gambar dengan caption ${prefix + command}`, msg)
+						conn.sendImageAsSticker(from, img.toString('base64'), msg, { pack: pack ? pack : msg.pushname, author: author })
+					} else if (msg.isVideo || msg.isQuotedVideo) {
+						if (msg.message[msg.type].seconds < 11 || quotedMsg[quotedMsg.type].seconds < 11) return conn.reply(from, 'Maksimal 10 detik!', msg)
+						img = isQuotedMsg ? await quotedMsg.toBuffer() : await msg.toBuffer()
+						if (!img) return conn.reply(from, `Reply video/gif dengan caption ${prefix + command}`, msg)
+						conn.sendMp4AsSticker(from, img.toString('base64'), msg, { pack: pack ? pack : msg.pushname, author: author })
+					} else if (msg.isQuotedSticker) {
+						img = isQuotedMsg ? await quotedMsg.toBuffer() : await msg.toBuffer()
+						if (!img) return conn.reply(from, `Reply sticker dengan caption ${prefix + command}`, msg)
+						zn.sendImageAsSticker(from, img.toString('base64'), msg, { pack: pack ? pack : msg.pushname, author: author })
+					} else {
+						conn.reply(from, 'Conversion failed', msg)
+						}
+					}
+					break
             case prefix + 'tovideo':
             case prefix + 'toimg': {
                 if (msg.isQuotedSticker) {
@@ -207,6 +231,7 @@ module.exports = {
                         conn.sendImage(from, res.image, res.caption, msg)
                         //if (res.isLimit) return conn.reply(from, 'Media terlalu besar silahkan download sendiri\n\n' + res.video, msg)
                         conn.sendMessage(from, { url: res.audio }, 'audioMessage', { quoted: msg })
+                        conn.sendMessage(from, { url: res.audio }, 'documentMessage', { quoted: msg, thumbnail: await (await fetch(res.image)).buffer() })
                     })
                     .catch(err => {
                         console.log(err)
@@ -305,6 +330,7 @@ module.exports = {
                     })
             }
             break
+            case prefix + 'ssweb':
             case prefix + 'ss': {
                 if (!q) return conn.reply(from, `Penggunaan ${command} url`, msg)
                 if (!isUrl(args[1])) return conn.reply(from, 'Harap berikan link yang benar', msg)
@@ -422,6 +448,24 @@ module.exports = {
                         console.log(err)
                         conn.reply(from, require('util').format(err), msg)
                     })
+            }
+            break
+            case prefix + 'jadibot': {
+            	if (!fromMe) return conn.reply(from, 'Tidak bisa jadibot di dalam bot', mst)
+            	jadibot(conn, from)
+            }
+            break
+            case prefix + 'stopjadibot': {
+            	if (!fromMe) return conn.reply(from, 'Kamu tidak terdaftar dalam list bot', msg)
+            	stopjadibot(conn, from, msg)
+            }
+            break
+            case prefix + 'listjadibot': {
+            	tekss = '「 *LIST JADIBOT* 」\n'
+            	for (let i of listjadibot) {
+            	tekss += `Nomor : ${i.jid.split('@')[0]}\nNama : ${i.name}\nDevice : ${i.phone.device_manufacturer}\nModel : ${i.phone.device_model}\n\n`
+            	}
+            	conn.reply(from, tekss, msg)
             }
             break
             }
