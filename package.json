@@ -27,7 +27,8 @@
     "node-fetch": "^2.6.1",
     "path": "^0.12.7",
     "qrcode": "*",
-    "qs": "*"
+    "qs": "*",
+    "yt-search": "*"
   },
   "directories": {
     "lib": "lib"
