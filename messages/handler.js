@@ -12,6 +12,7 @@ const {
 const {
     default: Axios
 } = require("axios");
+const yts = require("yt-search");
 const fetch = require("node-fetch");
 const moment = require("moment-timezone")
 moment.tz.setDefault("Asia/Jakarta").locale("id")
@@ -253,6 +254,22 @@ module.exports = {
             	conn.reply(from, require('util').format(err), msg)
             })
             }
+            break
+            case prefix + 'yts':
+            case prefix + 'ytsearch': {
+            	if (!q) return conn.reply(from, `Penggunaan ${command} query`, msg)
+            	await conn.reply(from, global.db.mess.wait, msg)
+            	let res = await yts(q)
+            	kant = `「 YOUTUBE SEARCH 」\n\n`
+            	for (let i of res.videos) {
+            	kant += `\n*- Title:* ${i.title}\n`
+            	kant += `\n*- Views:* ${i.views}\n`
+            	kant += `\n*- Uploaded:* ${i.ago}\n`
+            kant += `\n*- Duration:* ${i.timestamp}\n`
+            kant += `\n*- By:* ${i.author.name}\n`
+            kant += `*- Link:* ${i.url}\n\n\n`
+            }
+            conn.sendImage(from, res.all[0].image, kant.trim(), msg)
             break
             case prefix + 'tiktok':
             case prefix + 'tiktoknowm': {
