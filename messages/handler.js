@@ -135,7 +135,7 @@ module.exports = {
                 await conn.reply(from, tmt, msg)
             }
             break
-            /*case prefix + 's':
+            case prefix + 's':
             case prefix + 'sticker':
             case prefix + 'stiker': {
                 if (msg.isImage || msg.isQuotedImage || msg.isVideo && msg.message[msg.type].seconds < 11 || msg.isQuotedVideo && quotedMsg[quotedMsg.type].seconds < 11) {
@@ -151,8 +151,8 @@ module.exports = {
                     conn.reply(from, tmt, msg)
                 }
             }
-            break*/
-            case prefix + 's':
+            break
+            /*case prefix + 's':
             case prefix + 'sgif':
 			case prefix + 'stiker':
 			case prefix + 'sticker': {
@@ -175,7 +175,7 @@ module.exports = {
 						conn.reply(from, 'Conversion failed', msg)
 						}
 					}
-					break
+					break*/
             case prefix + 'tovideo':
             case prefix + 'toimg': {
                 if (msg.isQuotedSticker) {
@@ -201,7 +201,7 @@ module.exports = {
                     }
                 } else {
                     let tmt = `Reply sticker dengan caption ${command}`
-                    //conn.reply(from, tmt, msg)
+                    conn.reply(from, tmt, msg)
                 }
             }
             break
