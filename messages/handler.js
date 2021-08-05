@@ -452,7 +452,7 @@ module.exports = {
                     })
             }
             break
-            case prefix + 'jadibot': {
+            /*case prefix + 'jadibot': {
             	if (fromMe) return conn.reply(from, 'Tidak bisa jadibot di dalam bot', msg)
             	jadibot(conn, from)
             }
@@ -469,7 +469,7 @@ module.exports = {
             	}
             	conn.reply(from, tekss, msg)
             }
-            break
+            break*/
             }
         } catch (err) {
             console.log(err)
