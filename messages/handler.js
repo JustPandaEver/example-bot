@@ -201,7 +201,7 @@ module.exports = {
                     }
                 } else {
                     let tmt = `Reply sticker dengan caption ${command}`
-                    conn.reply(from, tmt, msg)
+                    //conn.reply(from, tmt, msg)
                 }
             }
             break
