@@ -27,7 +27,7 @@
     "node-fetch": "^2.6.1",
     "path": "^0.12.7",
     "qrcode": "*",
-    "qs": "*'
+    "qs": "*"
   },
   "directories": {
     "lib": "lib"
