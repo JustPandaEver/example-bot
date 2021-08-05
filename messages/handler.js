@@ -157,20 +157,20 @@ module.exports = {
 			case prefix + 'stiker':
 			case prefix + 'sticker': {
 				let [pack, author] = q.split`|`
-				if (!author) { isGroup ? groupMetadata.subject : author }
+				//if (!author) { isGroup ? groupMetadata.subject : author }
 					if (msg.isImage || msg.isQuotedImage) {
 						img = isQuotedMsg ? await quotedMsg.toBuffer() : await msg.toBuffer()
 						if (!img) return conn.reply(from, `Reply gambar dengan caption ${prefix + command}`, msg)
-						conn.sendImageAsSticker(from, img.toString('base64'), msg, { pack: pack ? pack : msg.pushname, author: author })
+						conn.sendImageAsSticker(from, img.toString('base64'), msg, { pack: pack ? pack : msg.pushname, author: isGroup ? groupMetadata.subject : author })
 					} else if (msg.isVideo || msg.isQuotedVideo) {
 						if (msg.message[msg.type].seconds < 11 || quotedMsg[quotedMsg.type].seconds < 11) return conn.reply(from, 'Maksimal 10 detik!', msg)
 						img = isQuotedMsg ? await quotedMsg.toBuffer() : await msg.toBuffer()
 						if (!img) return conn.reply(from, `Reply video/gif dengan caption ${prefix + command}`, msg)
-						conn.sendMp4AsSticker(from, img.toString('base64'), msg, { pack: pack ? pack : msg.pushname, author: author })
+						conn.sendMp4AsSticker(from, img.toString('base64'), msg, { pack: pack ? pack : msg.pushname, author: isGroup ? groupMetadata.subject : author })
 					} else if (msg.isQuotedSticker) {
 						img = isQuotedMsg ? await quotedMsg.toBuffer() : await msg.toBuffer()
 						if (!img) return conn.reply(from, `Reply sticker dengan caption ${prefix + command}`, msg)
-						zn.sendImageAsSticker(from, img.toString('base64'), msg, { pack: pack ? pack : msg.pushname, author: author })
+						conn.sendImageAsSticker(from, img.toString('base64'), msg, { pack: pack ? pack : msg.pushname, author: isGroup ? groupMetadata.subject : author })
 					} else {
 						conn.reply(from, 'Conversion failed', msg)
 						}
