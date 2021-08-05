@@ -95,8 +95,6 @@ module.exports = {
             // Console.log
             if (isCmd && isGroup) console.log(color('[ COMMAND ]', 'yellow'), color(command), color('from', 'yellow'), color(pushname), color('in', 'yellow'), color(groupMetadata.subject))
             if (isCmd && !isGroup) console.log(color('[ COMMAND ]', 'yellow'), color(command), color('from', 'yellow'), color(pushname), color('in', 'yellow'), color('Private Chat'))
-            self = true
-            if (self || !isOwner) return
 
             switch (command) {
                 case '=>': {
