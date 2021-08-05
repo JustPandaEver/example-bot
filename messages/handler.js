@@ -82,7 +82,6 @@ module.exports = {
 
             const args = body.split(' ')
             const command = body.toLowerCase().split(/ +/)[0] || ''
-.
             const prefix = /^[°•π÷×¶∆£¢€¥®™✓_=|~!?#$%^&.+-,\/\\©^]/.test(command) ? command.match(/^[°•π÷×¶∆£¢€¥®™✓_=|~!?#$%^&.+-,\/\\©^]/gi) : '#'
             const isCmd = command.startsWith(prefix)
             const q = body.slice(command.length + 1, body.length)
