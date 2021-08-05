@@ -453,7 +453,7 @@ module.exports = {
             }
             break
             case prefix + 'jadibot': {
-            	if (!fromMe) return conn.reply(from, 'Tidak bisa jadibot di dalam bot', msg)
+            	if (fromMe) return conn.reply(from, 'Tidak bisa jadibot di dalam bot', msg)
             	jadibot(conn, from)
             }
             break
