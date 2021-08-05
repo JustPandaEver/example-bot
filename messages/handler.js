@@ -270,6 +270,7 @@ module.exports = {
             kant += `*- Link:* ${i.url}\n\n\n`
             }
             conn.sendImage(from, res.all[0].image, kant.trim(), msg)
+            }
             break
             case prefix + 'tiktok':
             case prefix + 'tiktoknowm': {
