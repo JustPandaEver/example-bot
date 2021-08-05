@@ -30,8 +30,8 @@ const { jadibot, stopjadibot, listjadibot } = require("../lib/jadibot.js")
 const isUrl = (url) => {
     return url.match(new RegExp(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&/=]*)/, 'gi'))
 }
-
 const ytIdRegex = /(?:http(?:s|):\/\/|)(?:(?:www\.|)youtube(?:\-nocookie|)\.com\/(?:shorts\/)?(?:watch\?.*(?:|\&)v=|embed\/|v\/)|youtu\.be\/)([-_0-9A-Za-z]{11})/
+const public = false
 
 module.exports = {
     async chatUpdate(conn, chat) {
@@ -85,7 +85,7 @@ module.exports = {
             const prefix = /^[°•π÷×¶∆£¢€¥®™✓_=|~!?#$%^&.+-,\/\\©^]/.test(command) ? command.match(/^[°•π÷×¶∆£¢€¥®™✓_=|~!?#$%^&.+-,\/\\©^]/gi) : '#'
             const isCmd = command.startsWith(prefix)
             const q = body.slice(command.length + 1, body.length)
-            //const isOwner = fromMe || userData.isOwner
+            const isOwner = fromMe || userData.isOwner
 
             const print = function (teks) {
                 if (typeof teks !== 'string') teks = require('util').inspect(teks)
@@ -95,10 +95,12 @@ module.exports = {
             // Console.log
             if (isCmd && isGroup) console.log(color('[ COMMAND ]', 'yellow'), color(command), color('from', 'yellow'), color(pushname), color('in', 'yellow'), color(groupMetadata.subject))
             if (isCmd && !isGroup) console.log(color('[ COMMAND ]', 'yellow'), color(command), color('from', 'yellow'), color(pushname), color('in', 'yellow'), color('Private Chat'))
+            
+            if (!public || !isOwner) return
 
             switch (command) {
                 case '=>': {
-                    //if (!isOwner) return
+                    if (!isOwner) return
                     try {
                         let evaled = eval(`(async() => {` + q + `})()`)
                         if (typeof evaled !== 'string') evaled = require('util').inspect(evaled)
@@ -135,7 +137,7 @@ module.exports = {
                 await conn.reply(from, tmt, msg)
             }
             break
-            case prefix + 's':
+            /*case prefix + 's':
             case prefix + 'sticker':
             case prefix + 'stiker': {
                 if (msg.isImage || msg.isQuotedImage || msg.isVideo && msg.message[msg.type].seconds < 11 || msg.isQuotedVideo && quotedMsg[quotedMsg.type].seconds < 11) {
@@ -151,8 +153,8 @@ module.exports = {
                     conn.reply(from, tmt, msg)
                 }
             }
-            break
-            /*case prefix + 's':
+            break*/
+            case prefix + 's':
             case prefix + 'sgif':
 			case prefix + 'stiker':
 			case prefix + 'sticker': {
@@ -175,7 +177,7 @@ module.exports = {
 						conn.reply(from, 'Conversion failed', msg)
 						}
 					}
-					break*/
+					break
             case prefix + 'tovideo':
             case prefix + 'toimg': {
                 if (msg.isQuotedSticker) {
@@ -201,7 +203,7 @@ module.exports = {
                     }
                 } else {
                     let tmt = `Reply sticker dengan caption ${command}`
-                    //conn.reply(from, tmt, msg)
+                    conn.reply(from, tmt, msg)
                 }
             }
             break
