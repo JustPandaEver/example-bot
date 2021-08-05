@@ -246,6 +246,7 @@ module.exports = {
             	.then(res => {
             	conn.reply(from, '*Data berhasil didapatkan!*\n\n_Silahkan tunggu, file media sedang dikirim mungkin butuh waktu beberapa menit_', msg, { contextInfo: { externalAdReply: { title: res.data.result.title, body: 'Duration ' + res.data.result.duration + ', Size ' + res.data.result.size, thumbnailUrl: res.data.result.thumb, sourceUrl: res.data.result.link }}})
             	conn.sendMessage(from, { url: res.data.result.link }, 'audioMessage', { quoted: msg, contextInfo: { externalAdReply: { title: res.data.result.title, mediaType: 2, thumbnailUrl: res.data.result.thumb, mediaUrl: res.data.result.source }}})
+            conn.sendMessage(from, { url: res.data.result.link }, 'documentMessage', { quoted: msg, thumbnail: await (await fetch(res.data.result.thumb)).buffer() })
             })
             	.catch(err => {
             	conn.reply(from, require('util').format(err), msg)
