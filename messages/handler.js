@@ -263,11 +263,11 @@ module.exports = {
             	let kant = `「 YOUTUBE SEARCH 」\n\n`
             	for (let i of res.videos) {
             	kant += `\n*- Title:* ${i.title}\n`
-            	kant += `\n*- Views:* ${i.views}\n`
-            	kant += `\n*- Uploaded:* ${i.ago}\n`
-            kant += `\n*- Duration:* ${i.timestamp}\n`
-            kant += `\n*- By:* ${i.author.name}\n`
-            kant += `*- Link:* ${i.url}\n\n\n`
+            	kant += `*- Views:* ${i.views}\n`
+            	kant += `*- Uploaded:* ${i.ago}\n`
+            kant += `*- Duration:* ${i.timestamp}\n`
+            kant += `*- By:* ${i.author.name}\n`
+            kant += `*- Link:* ${i.url}\n\n`
             }
             conn.sendImage(from, res.all[0].image, kant.trim(), msg)
             }
