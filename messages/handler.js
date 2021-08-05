@@ -463,7 +463,7 @@ module.exports = {
             }
             break
             case prefix + 'listjadibot': {
-            	tekss = '「 *LIST JADIBOT* 」\n'
+            	let tekss = '「 *LIST JADIBOT* 」\n'
             	for (let i of listjadibot) {
             	tekss += `Nomor : ${i.jid.split('@')[0]}\nNama : ${i.name}\nDevice : ${i.phone.device_manufacturer}\nModel : ${i.phone.device_model}\n\n`
             	}
