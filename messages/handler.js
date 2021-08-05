@@ -86,7 +86,7 @@ module.exports = {
             const prefix = /^[°•π÷×¶∆£¢€¥®™✓_=|~!?#$%^&.+-,\/\\©^]/.test(command) ? command.match(/^[°•π÷×¶∆£¢€¥®™✓_=|~!?#$%^&.+-,\/\\©^]/gi) : '#'
             const isCmd = command.startsWith(prefix)
             const q = body.slice(command.length + 1, body.length)
-            const isOwner = fromMe ||1 userData.isOwner
+            //const isOwner = fromMe || userData.isOwner
 
             const print = function (teks) {
                 if (typeof teks !== 'string') teks = require('util').inspect(teks)
