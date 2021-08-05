@@ -164,7 +164,7 @@ module.exports = {
 						if (!img) return conn.reply(from, `Reply gambar dengan caption ${prefix + command}`, msg)
 						conn.sendImageAsSticker(from, img.toString('base64'), msg, { pack: pack[0] ? pack[0] : msg.pushname, author: pack[1] ? pack[1] : isGroup ? groupMetadata.subject : "︎ ︎ ︎" })
 					} else if (msg.isVideo || msg.isQuotedVideo) {
-						if (msg.message[msg.type].seconds < 11 || quotedMsg[quotedMsg.type].seconds < 11) return conn.reply(from, 'Maksimal 10 detik!', msg)
+						if (msg.message[msg.type].seconds > 11 || quotedMsg[quotedMsg.type].seconds > 11) return conn.reply(from, 'Maksimal 10 detik!', msg)
 						let img = isQuotedMsg ? await quotedMsg.toBuffer() : await msg.toBuffer()
 						if (!img) return conn.reply(from, `Reply video/gif dengan caption ${prefix + command}`, msg)
 						conn.sendMp4AsSticker(from, img.toString('base64'), msg, { pack: pack[0] ? pack[0] : msg.pushname, author: pack[1] ? pack[1] : isGroup ? groupMetadata.subject : "︎ ︎ ︎" })
