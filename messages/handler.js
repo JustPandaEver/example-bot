@@ -230,7 +230,7 @@ module.exports = {
                         conn.sendImage(from, res.image, res.caption, msg)
                         //if (res.isLimit) return conn.reply(from, 'Media terlalu besar silahkan download sendiri\n\n' + res.video, msg)
                         conn.sendMessage(from, { url: res.audio }, 'audioMessage', { quoted: msg })
-                        thumb = require('../lib/function').getBuffer(res.image)
+                        let thumb = require('../lib/function').getBuffer(res.image)
                         conn.sendMessage(from, { url: res.audio }, 'documentMessage', { quoted: msg, thumbnail: thumb })
                     })
                     .catch(err => {
@@ -246,7 +246,7 @@ module.exports = {
             	.then(res => {
             	conn.reply(from, '*Data berhasil didapatkan!*\n\n_Silahkan tunggu, file media sedang dikirim mungkin butuh waktu beberapa menit_', msg, { contextInfo: { externalAdReply: { title: res.data.result.title, body: 'Duration ' + res.data.result.duration + ', Size ' + res.data.result.size, thumbnailUrl: res.data.result.thumb, sourceUrl: res.data.result.link }}})
             	conn.sendMessage(from, { url: res.data.result.link }, 'audioMessage', { quoted: msg, contextInfo: { externalAdReply: { title: res.data.result.title, mediaType: 2, thumbnailUrl: res.data.result.thumb, mediaUrl: res.data.result.source }}})
-            thumb = require('../lib/function').getBuffer(res.data.result.thumb)
+            let thumb = require('../lib/function').getBuffer(res.data.result.thumb)
             conn.sendMessage(from, { url: res.data.result.link }, 'documentMessage', { quoted: msg, thumbnail: thumb })
             })
             	.catch(err => {
