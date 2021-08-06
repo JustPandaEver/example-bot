@@ -216,7 +216,7 @@ module.exports = {
             	try {
             	if (!q) return conn.reply(from, `Penggunaan ${command} judul lagu`, msg)
             await conn.reply(from, global.db.mess.wait, msg)
-            let res = await axios.get(`https://some-random-api.ml/lyrics?title=${q}`)
+            let res = await require('axios').get(`https://some-random-api.ml/lyrics?title=${q}`)
             await conn.reply(from, res.data.lyrics, msg, { contextInfo: { externalAdReply: { title: res.data.title, body: res.data.author, thumbnailUrl: res.data.thumbnail, sourceUrl: res.data.links }}})
             } catch(e) {
             	conn.reply(from, require('util').format(e), msg)
