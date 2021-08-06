@@ -189,10 +189,10 @@ module.exports = {
 				_msg += `*${i.title}*\n_${i.link}_\n_${i.snippet}_\n\n`
 				}
 			try{
-				ss = global.config.api + '/screenshot?apikey=' + global.config.apikey + '&url=' + _url
+				let ss = global.config.api + '/screenshot?apikey=' + global.config.apikey + '&url=' + _url
 				await conn.sendImage(from, ss, _url + '\n\n' + _msg, msg)
 			} catch(e) {
-				conn.reply(from, _msg, msg)
+				conn.reply(from, _msg, msg, { detectLinks: false })
 			}
 			}
 			break
