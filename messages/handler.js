@@ -31,7 +31,7 @@ const {
 } = require("../lib/convert");
 const api = require("../lib/api");
 const { jadibot, stopjadibot, listjadibot } = require("../lib/jadibot.js")
-const fakethumb = fs.readFileSync("../tmp/thumb.jpg")
+//const fakethumb = fs.readFileSync("../thumb.jpg")
 const isUrl = (url) => {
     return url.match(new RegExp(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&/=]*)/, 'gi'))
 }
@@ -136,7 +136,7 @@ module.exports = {
                 tmt += `${prefix}artinama\n`
                 tmt += `${prefix}ramaljodoh\n`
                 tmt += `${prefix}call`
-                await conn.reply(from, tmt, msg, { detectLinks: false, thumbnail: fakethumb })
+                await conn.reply(from, tmt, msg, { detectLinks: false })
             }
             break
             /*case prefix + 's':
