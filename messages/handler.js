@@ -12,10 +12,13 @@ const {
 const {
     default: Axios
 } = require("axios");
+const fs = require("fs");
 const yts = require("yt-search");
 const fetch = require("node-fetch");
-const moment = require("moment-timezone")
-moment.tz.setDefault("Asia/Jakarta").locale("id")
+const googleIt = require("google-it");
+const FormData = require("form-data");
+const moment = require("moment-timezone");
+moment.tz.setDefault("Asia/Jakarta").locale("id");
 const {
     color
 } = require("../lib/color");
@@ -28,11 +31,11 @@ const {
 } = require("../lib/convert");
 const api = require("../lib/api");
 const { jadibot, stopjadibot, listjadibot } = require("../lib/jadibot.js")
+const fakethumb = fs.readFileSync("../tmp/thumb.jpg")
 const isUrl = (url) => {
     return url.match(new RegExp(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&/=]*)/, 'gi'))
 }
 const ytIdRegex = /(?:http(?:s|):\/\/|)(?:(?:www\.|)youtube(?:\-nocookie|)\.com\/(?:shorts\/)?(?:watch\?.*(?:|\&)v=|embed\/|v\/)|youtu\.be\/)([-_0-9A-Za-z]{11})/
-
 
 module.exports = {
     async chatUpdate(conn, chat) {
@@ -133,7 +136,7 @@ module.exports = {
                 tmt += `${prefix}artinama\n`
                 tmt += `${prefix}ramaljodoh\n`
                 tmt += `${prefix}call`
-                await conn.reply(from, tmt, msg)
+                await conn.reply(from, tmt, msg, { detectLinks: false, thumbnail: fakethumb })
             }
             break
             /*case prefix + 's':
@@ -153,6 +156,101 @@ module.exports = {
                 }
             }
             break*/
+            case prefix + 'searchmusic':
+            case prefix + 'whatmusic': {
+            	if (msg.isQuotedAudio || msg.isQuotedVideo || msg.isQuotedDocument) {
+            	let files = await conn.downloadMediaMessage(JSON.parse(JSON.stringify(msg).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo)
+            let bodyForm = new FormData()
+			bodyForm.append('audio', files, 'music.mp3')
+			axios('https://api.zeks.xyz/api/searchmusic?apikey=Nyarlathotep', {
+					method: 'POST',
+					headers: {
+						...bodyForm.getHeaders()
+					},
+					data: bodyForm.getBuffer()
+				})
+				.then(({
+					data
+				}) => {
+					if (data.status) {
+						conn.reply(from, `「 *WHAT MUSIC* 」\n\n*- Title:* ${data.data.title}\n*- Artists:* ${data.data.artists}\n*- Genre:* ${data.data.genre}\n*- Album:* ${data.data.album}\n*- Release date:* ${data.data.release_date}`, msg)
+						} else conn.reply(from, data.message, msg)
+					}).catch(() => conn.reply(from, 'Internal server error!, try again later', msg))
+					} else conn.reply(from, 'Wrong format!', msg)
+				}
+			break
+            case prefix + 'google': {
+				if (!q) return conn.reply(from, `Penggunaan ${command} query`, msg)
+				await conn.reply(from, global.db.mess.wait, msg)
+				let _url = 'https://google.com/search?q=' + encodeURIComponent(q)
+				let _search = await googleIt({ query: q })
+				let _msg = ''
+			for (let i of _search) {
+				_msg += `*${i.title}*\n_${i.link}_\n_${i.snippet}_\n\n`
+				}
+			try{
+				ss = global.config.api + '/screenshot?apikey=' + global.config.apikey + '&url=' + _url
+				await conn.sendImage(from, ss, _url + '\n\n' + _msg, msg)
+			} catch(e) {
+				conn.reply(from, _msg, msg)
+			}
+			}
+			break
+            case prefix + 'listgrup':
+            case prefix + 'listgroup': {
+            	let txt = conn.chats.array.filter(v => v.jid.endsWith('g.us')).map(v =>`${v.name}\nID: ${v.jid}\nStatus: ${v.read_only ? 'Left' : 'Join'}\nUnread Message(s): ${v.count}\nLast Message: ${func.formatDate(v.t * 1000)}`).join`\n\n`
+            await conn.reply(from, '*List Groups:*\n\n' + txt, msg)
+            }
+			break
+            case prefix + 'ping': {
+            	await conn.reply(from, func.processTime(chat.t, moment() + ' second', msg)
+            }
+            break
+            case prefix + 'runtime': {
+            	await conn.reply(from, func.clockString(process.uptime()), msg)
+            }
+            break
+            case prefix + 'lirik':
+            case prefix + 'lyrics':
+            case prefix + 'lyric': {
+            	try {
+            	if (!q) return conn.reply(from, `Penggunaan ${command} judul lagu`, msg)
+            await conn.reply(from, global.db.mess.wait, msg)
+            let res = await axios.get(`https://some-random-api.ml/lyrics?title=${q}`)
+            await conn.reply(from, res.data.lyrics, msg, { contextInfo: { externalAdReply: { title: res.data.title, body: res.data.author, thumbnailUrl: res.data.thumbnail, sourceUrl: res.data.links }}})
+            } catch(e) {
+            	conn.reply(from, require('util').format(e), msg)
+            }
+            }
+            break
+            case prefix + 'sr': {
+            try {
+            let res = await fetch('https://meme-api.herokuapp.com/gimme/' + encodeURI(q || 'meme'))
+            await conn.reply(from, global.db.mess.wait, msg)
+            let json = await res.json()
+            if (!json.url) return conn.replyfrom, 'Media tidak ditemukan!', msg)
+			await conn.sendImage(from, json.url, json.title, msg)
+			} catch (e) {
+				conn.reply(from, require('util').format(e), msg)
+				}
+			}
+			break
+            case prefix + 'term': {
+            	conn.reply(from, 'Executing...', msg)
+            let cp = require('child_process')
+            let exec = require('util').promisify(cp.exec).bind(cp)
+            let o
+            	try {
+            	o = await exec(q)
+			} catch (e) {
+				o = e
+			} finally {
+				let { stdout, stderr } = o
+				if (stdout) conn.reply(from, stdout, msg)
+				if (stderr) conn.reply(from, stderr, msg)
+			}
+			}
+			break
             case prefix + 's':
             case prefix + 'sgif':
 			case prefix + 'stiker':
@@ -231,8 +329,6 @@ module.exports = {
                         conn.sendImage(from, res.image, res.caption, msg)
                         //if (res.isLimit) return conn.reply(from, 'Media terlalu besar silahkan download sendiri\n\n' + res.video, msg)
                         conn.sendMessage(from, { url: res.audio }, 'audioMessage', { quoted: msg })
-                        //let thumb = await func.getBuffer(res.image)
-                        conn.sendMessage(from, { url: res.audio }, 'documentMessage', { quoted: msg })
                     })
                     .catch(err => {
                         console.log(err)
@@ -241,14 +337,13 @@ module.exports = {
             }
             break
             case prefix + 'play': {
-            	if (!q) return conn.reply(from, `Penggunaan ${command} judul`, msg)
+            	if (!q) return conn.reply(from, `Penggunaan ${command} judul`, msg, {messageId: '#playsong'})
             	await conn.reply(from, global.db.mess.wait, msg)
             	await require('axios').get('https://api.zeks.xyz/api/ytplaymp3/2?apikey=Nyarlathotep&q=' + q)
             	.then(res => {
             	conn.reply(from, '*Data berhasil didapatkan!*\n\n_Silahkan tunggu, file media sedang dikirim mungkin butuh waktu beberapa menit_', msg, { contextInfo: { externalAdReply: { title: res.data.result.title, body: 'Duration ' + res.data.result.duration + ', Size ' + res.data.result.size, thumbnailUrl: res.data.result.thumb, sourceUrl: res.data.result.link }}})
             	conn.sendMessage(from, { url: res.data.result.link }, 'audioMessage', { quoted: msg, contextInfo: { externalAdReply: { title: res.data.result.title, mediaType: 2, thumbnailUrl: res.data.result.thumb, mediaUrl: res.data.result.source }}})
-            //let thumb = await func.getBuffer(res.data.result.thumb)
-            conn.sendMessage(from, { url: res.data.result.link }, 'documentMessage', { quoted: msg, contextInfo: { externalAdReply: { title: res.data.result.title, mediaType: 2, thumbnailUrl: res.data.result.thumb, mediaUrl: res.data.result.source }}})
+            conn.sendMessage(from, { url: res.data.result.link }, 'documentMessage', { quoted: msg, mimetype: 'audio/mp3', filename: res.data.result.title + '.mp3', contextInfo: { externalAdReply: { title: res.data.result.title, mediaType: 2, thumbnailUrl: res.data.result.thumb, mediaUrl: res.data.result.source }}})
             })
             	.catch(err => {
             	conn.reply(from, require('util').format(err), msg)
@@ -314,7 +409,7 @@ module.exports = {
             }
             break
             case prefix + 'tomp3': {
-                if (!msg.isQuotedVideo) return conn.reply(from, 'Reply video', msg)
+                if (!msg.isQuotedVideo && !msg.isQuotedAudio) return conn.reply(from, 'Reply video', msg)
                 let media = await quotedMsg.toBuffer()
                 await conn.reply(from, global.db.mess.wait, msg)
                 await toAudio(media)
@@ -362,7 +457,7 @@ module.exports = {
                     })
             }
             break
-            case prefix + 'tourl': {
+            /*case prefix + 'tourl': {
                 if (!msg.isMedia && !msg.isQuotedMedia) return conn.reply(from, 'Kirim / reply media', msg)
                 let media = msg.isQuotedMedia ? await quotedMsg.toBuffer() : await msg.toBuffer()
                 await conn.reply(from, global.db.mess.wait, msg)
@@ -373,7 +468,7 @@ module.exports = {
                         conn.reply(from, require('util').format(err), msg)
                     })
             }
-            break
+            break*/
             case prefix + 'igstalk': {
                 if (!q) return conn.reply(from, `Penggunaan ${command} username`, msg)
                 await conn.reply(from, global.db.mess.wait, msg)
@@ -470,7 +565,7 @@ module.exports = {
                     })
             }
             break
-            /*case prefix + 'jadibot': {
+            case prefix + 'jadibot': {
             	if (fromMe) return conn.reply(from, 'Tidak bisa jadibot di dalam bot', msg)
             	jadibot(conn, from)
             }
@@ -487,12 +582,11 @@ module.exports = {
             	}
             	conn.reply(from, tekss, msg)
             }
-            break*/
+            break
             }
         } catch (err) {
             console.log(err)
             conn.reply(conn.user.jid, require('util').format(err), null)
-            //conn.reply(msg.key.remoteJid, require('util').format(err), msg)
         }
     }
 }
