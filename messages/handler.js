@@ -228,7 +228,7 @@ module.exports = {
             let res = await fetch('https://meme-api.herokuapp.com/gimme/' + encodeURI(q || 'meme'))
             await conn.reply(from, global.db.mess.wait, msg)
             let json = await res.json()
-            if (!json.url) return conn.replyfrom, 'Media tidak ditemukan!', msg)
+            if (!json.url) return conn.reply(from, 'Media tidak ditemukan!', msg)
 			await conn.sendImage(from, json.url, json.title, msg)
 			} catch (e) {
 				conn.reply(from, require('util').format(e), msg)
