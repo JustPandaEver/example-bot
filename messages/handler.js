@@ -203,7 +203,7 @@ module.exports = {
             }
 			break
             case prefix + 'ping': {
-            	await conn.reply(from, func.processTime(chat.t, moment() + ' second', msg)
+            	await conn.reply(from, func.processTime(chat.t, moment()) + ' second', msg)
             }
             break
             case prefix + 'runtime': {
