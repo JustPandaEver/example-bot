@@ -123,7 +123,7 @@ module.exports = {
 			case prefix + 'help': {
 				let tmt = `Yo ${pushname} 👋\n\n`
 				tmt += `*Tanggal:* ${tanggal}\n`
-				tmt += `*Waktu:* ${waktu.charAt(0).toUpperCase() + waktu.slice(1)} || ${time}\n\n`
+				tmt += `*Waktu:* ${waktu.charAt(0).toUpperCase() + waktu.slice(1)} || ${time} WIB\n\n`
 				tmt += `MENU BOT\n\n`
 				tmt += `*TOOL*\n`
 				tmt += `• ${prefix}sticker\n`
