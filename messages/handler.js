@@ -94,7 +94,7 @@ module.exports = {
 			const isCmd = command.startsWith(prefix)
 			const q = body.slice(command.length + 1, body.length)
 			const isOwner = fromMe || userData.isOwner
-			const tanggal = moment.tz('Asia/Jakarta').format('LL')
+			const tanggal = moment.tz('Asia/Jakarta').format('dddd') + ', ' + moment.tz('Asia/Jakarta').format('LL')
 			const waktu = moment.tz('Asia/Jakarta').format('a')
 			const time = moment.tz('Asia/Jakarta').format('HH:mm:ss')
 
