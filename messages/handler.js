@@ -174,7 +174,7 @@ module.exports = {
 							data
 						}) => {
 							if (data.status) {
-								conn.reply(from, `「 *WHAT MUSIC* 」\n\n*Title:* ${data.data.title}\n*Artists:* ${data.data.artists}\n*Genre:* ${data.data.genre}\n*Album:* ${data.data.album}\n*Release Date:* ${data.data.release_date}`, msg)
+								conn.reply(from, `*What Music*\n\n*Title:* ${data.data.title}\n*Artists:* ${data.data.artists}\n*Genre:* ${data.data.genre}\n*Album:* ${data.data.album}\n*Release Date:* ${data.data.release_date}`, msg)
 							} else conn.reply(from, data.message, msg)
 						}).catch(() => conn.reply(from, 'Internal server error!, try again later', msg))
 				} else conn.reply(from, `Reply video/musik dgn caption ${command}`, msg)
@@ -184,9 +184,7 @@ module.exports = {
 				if (!q) return conn.reply(from, `Penggunaan ${command} query`, msg)
 				await conn.reply(from, global.db.mess.wait, msg)
 				let _url = 'https://google.com/search?q=' + encodeURIComponent(q)
-				let _search = await googleIt({
-					query: q
-				})
+				let _search = await googleIt({ query: q })
 				let _msg = ''
 				for (let i of _search) {
 					_msg += `*${i.title}*\n_${i.link}_\n_${i.snippet}_\n\n`
@@ -210,7 +208,7 @@ module.exports = {
 			}
 			break
 			case prefix + 'runtime': {
-				await conn.reply(from, func.clockString(process.uptime()), msg)
+				await conn.reply(from, func.runtime(process.uptime()), msg)
 			}
 			break
 			case prefix + 'lirik':
@@ -415,7 +413,7 @@ module.exports = {
 			}
 			break
 			case prefix + 'tomp3': {
-				if (type == 'videoMessage' || msg.isQuotedVideo || msg.isQuotedAudio || msg.isQuotedDocument) {
+				if (msg.isVideo || msg.isQuotedVideo || msg.isQuotedAudio || msg.isQuotedDocument) {
 				let media = isQuotedMsg ? await quotedMsg.toBuffer() : await msg.toBuffer()
 				await conn.reply(from, global.db.mess.wait, msg)
 				await toAudio(media)
