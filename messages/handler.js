@@ -121,7 +121,7 @@ module.exports = {
 				break
 			case prefix + 'menu':
 			case prefix + 'help': {
-				let tmt = `Yo ${pushname} 👋\n\n`
+				let tmt = `Yo @${sender.split('@')[0]} 👋\n\n`
 				tmt += `*Tanggal:* ${tanggal}\n`
 				tmt += `*Waktu:* ${waktu.charAt(0).toUpperCase() + waktu.slice(1)} || ${time} WIB\n`
 				tmt += `*Runtime Bot:* ${func.clockString(process.uptime())}\n\n`
@@ -153,7 +153,7 @@ module.exports = {
 				tmt += `• ${prefix}call\n\n`
 				tmt += `*Source Code:*\n`
 				tmt += `https://github.com/zennn08/example-bot`
-				await conn.reply(from, tmt, msg, { detectLinks: false, contextInfo: { externalAdReply: { title: 'Example Bot', body: 'API', thumbnailUrl: 'https://justaqul.xyz/assets/img/profile/c507c50fcedc1ab55a9e8e436a2081d5.jpg', sourceUrl: 'https://justaqul.xyz' }}})
+				await conn.reply(from, tmt, msg, { detectLinks: false, contextInfo: { mentionedJid: [sender], externalAdReply: { title: 'Example Bot', body: 'API', thumbnailUrl: 'https://justaqul.xyz/assets/img/profile/c507c50fcedc1ab55a9e8e436a2081d5.jpg', sourceUrl: 'https://justaqul.xyz' }}})
 			}
 			break
 			case prefix + 'searchmusic':
