@@ -34,7 +34,7 @@ const {
 	jadibot,
 	stopjadibot,
 	listjadibot
-} = require("../lib/jadibot.js")
+} = require("../lib/jadibot.js");
 //const fakethumb = fs.readFileSync("../thumb.jpg")
 const isUrl = (url) => {
 	return url.match(new RegExp(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&/=]*)/, 'gi'))
@@ -145,6 +145,7 @@ module.exports = {
 				tmt += `• ${prefix}lyrics\n`
 				tmt += `• ${prefix}google\n`
 				tmt += `• ${prefix}ytsearch\n`
+				tmt += `• ${prefix}whatmusic\n`
 				tmt += `• ${prefix}igstalk\n`
 				tmt += `\n*FUN*\n`
 				tmt += `• ${prefix}artimimpi\n`
@@ -173,7 +174,7 @@ module.exports = {
 							data
 						}) => {
 							if (data.status) {
-								conn.reply(from, `「 *WHAT MUSIC* 」\n\n*- Title:* ${data.data.title}\n*- Artists:* ${data.data.artists}\n*- Genre:* ${data.data.genre}\n*- Album:* ${data.data.album}\n*- Release date:* ${data.data.release_date}`, msg)
+								conn.reply(from, `「 *WHAT MUSIC* 」\n\n*Title:* ${data.data.title}\n*Artists:* ${data.data.artists}\n*Genre:* ${data.data.genre}\n*Album:* ${data.data.album}\n*Release Date:* ${data.data.release_date}`, msg)
 							} else conn.reply(from, data.message, msg)
 						}).catch(() => conn.reply(from, 'Internal server error!, try again later', msg))
 				} else conn.reply(from, `Reply video/musik dgn caption ${command}`, msg)
@@ -285,7 +286,7 @@ module.exports = {
 						await conn.reply(from, global.db.mess.wait, msg)
 						const media = await quotedMsg.toBuffer()
 						webpToMp4(media)
-							.then((res) => conn.sendVideo(from, res, 'Nih kak', msg))
+							.then((res) => conn.sendVideo(from, res, '', msg))
 							.catch((err) => {
 								console.log(err)
 								conn.reply(from, require('util').format(err), msg)
@@ -295,7 +296,7 @@ module.exports = {
 						const media = await quotedMsg.toBuffer()
 						webpToPng(media)
 							.then((res) => {
-								conn.sendImage(from, res, 'Nih kak', msg)
+								conn.sendImage(from, res, '', msg)
 							})
 							.catch((err) => {
 								console.log(err)
@@ -315,7 +316,10 @@ module.exports = {
 				await api.ytmp4(args[1], args[2] ? args[2] : '360p')
 					.then(res => {
 						conn.sendImage(from, res.image, res.caption, msg)
-						conn.sendVideo(from, res.video, '', msg)
+						let _thumb = {}
+						try { _thumb = { thumbnail: await (await fetch(res.image)).buffer() } }
+						catch (e) { }
+						conn.sendMessage(from, { url: res.video }, 'videoMessage', { quoted: msg, ..._thumb })
 					})
 					.catch(err => {
 						console.log(err)
@@ -357,7 +361,7 @@ module.exports = {
 				if (!q) return conn.reply(from, `Penggunaan ${command} query`, msg)
 				await conn.reply(from, global.db.mess.wait, msg)
 				let res = await yts(q)
-				let capt = `「 YOUTUBE SEARCH 」\n\n`
+				let capt = `「 *YOUTUBE SEARCH* 」\n\n`
 				for (let i of res.videos) {
 					capt += `*Title:* ${i.title}\n`
 					capt += `*Views:* ${i.views}\n`
