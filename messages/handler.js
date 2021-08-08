@@ -90,7 +90,7 @@ module.exports = {
 
 			const args = body.split(' ')
 			const command = body.toLowerCase().split(/ +/)[0] || ''
-			const prefix = /^[°•π÷×¶∆£¢€¥®™=|~!#$%^&.?/\\©^z+*@,;]/.test(cmd) ? cmd.match(/^[°•π÷×¶∆£¢€¥®™=|~!#$%^&.?/\\©^z+*@,;]/gi) : '-'
+			const prefix = /^[°•π÷×¶∆£¢€¥®™=|~!#$%^&.?/\\©^z+*@,;]/.test(command) ? command.match(/^[°•π÷×¶∆£¢€¥®™=|~!#$%^&.?/\\©^z+*@,;]/gi) : '-'
 			const isCmd = command.startsWith(prefix)
 			const q = body.slice(command.length + 1, body.length)
 			const isOwner = fromMe || userData.isOwner
