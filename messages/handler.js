@@ -90,13 +90,13 @@ module.exports = {
 
 			const args = body.split(' ')
 			const command = body.toLowerCase().split(/ +/)[0] || ''
-			const prefix = /^[°•π÷×¶∆£¢€¥®™✓_=|~!?#$%^&.+-,\/\\©^]/.test(command) ? command.match(/^[°•π÷×¶∆£¢€¥®™✓_=|~!?#$%^&.+-,\/\\©^]/gi) : '#'
+			const prefix = /^[���׶������=|~!#$%^&.?/\\�^z+*@,;]/.test(command) ? command.match(/^[���׶������=|~!#$%^&.?/\\�^z+*@,;]/gi) : '-'
 			const isCmd = command.startsWith(prefix)
 			const q = body.slice(command.length + 1, body.length)
 			const isOwner = fromMe || userData.isOwner
 			const tanggal = moment.tz('Asia/Jakarta').format('dddd') + ', ' + moment.tz('Asia/Jakarta').format('LL')
 			const waktu = moment.tz('Asia/Jakarta').format('a')
-			const time = moment.tz('Asia/Jakarta').format('HH:mm:ss')
+			const time = moment.tz('Asia/Jakarta').format('HH:mm:ss z')
 
 			const print = function(teks) {
 				if (typeof teks !== 'string') teks = require('util').inspect(teks)
@@ -119,46 +119,44 @@ module.exports = {
 					}
 				}
 				break
-			case prefix + 'menu':
-			case prefix + 'help': {
-				let tmt = `Yo @${sender.split('@')[0]} 👋\n\n`
+			case prefix + 'menu': case prefix + 'help': {
+				let tmt = `Yo @${sender.split('@')[0]} \n\n`
 				tmt += `*Tanggal:* ${tanggal}\n`
-				tmt += `*Waktu:* ${waktu.charAt(0).toUpperCase() + waktu.slice(1)} || ${time} WIB\n`
+				tmt += `*Waktu:* ${waktu.charAt(0).toUpperCase() + waktu.slice(1)} || ${time}\n`
 				tmt += `*Runtime Bot:* ${func.clockString(process.uptime())}\n\n`
 				tmt += `*TOOLs*\n`
-				tmt += `• ${prefix}sticker\n`
-				tmt += `• ${prefix}toimg\n`
-				tmt += `• ${prefix}tovideo\n`
-				tmt += `• ${prefix}tomp3\n`
-				tmt += `• ${prefix}toptt\n`
-				tmt += `• ${prefix}ssweb\n`
+				tmt += `� ${prefix}sticker\n`
+				tmt += `� ${prefix}toimg\n`
+				tmt += `� ${prefix}tovideo\n`
+				tmt += `� ${prefix}tomp3\n`
+				tmt += `� ${prefix}toptt\n`
+				tmt += `� ${prefix}ssweb\n`
 				tmt += `\n*DOWNLOADER*\n`
-				tmt += `• ${prefix}play\n`
-				tmt += `• ${prefix}ytmp4\n`
-				tmt += `• ${prefix}ytmp3\n`
-				tmt += `• ${prefix}igdl\n`
-				tmt += `• ${prefix}tiktokwm\n`
-				tmt += `• ${prefix}tiktoknowm\n`
-				tmt += `• ${prefix}tiktokmusic\n`
+				tmt += `� ${prefix}play\n`
+				tmt += `� ${prefix}ytmp4\n`
+				tmt += `� ${prefix}ytmp3\n`
+				tmt += `� ${prefix}igdl\n`
+				tmt += `� ${prefix}tiktokwm\n`
+				tmt += `� ${prefix}tiktoknowm\n`
+				tmt += `� ${prefix}tiktokmusic\n`
 				tmt += `\n*SEARCH*\n`
-				tmt += `• ${prefix}pinterest\n`
-				tmt += `• ${prefix}lyrics\n`
-				tmt += `• ${prefix}google\n`
-				tmt += `• ${prefix}ytsearch\n`
-				tmt += `• ${prefix}whatmusic\n`
-				tmt += `• ${prefix}igstalk\n`
+				tmt += `� ${prefix}pinterest\n`
+				tmt += `� ${prefix}lyrics\n`
+				tmt += `� ${prefix}google\n`
+				tmt += `� ${prefix}ytsearch\n`
+				tmt += `� ${prefix}whatmusic\n`
+				tmt += `� ${prefix}igstalk\n`
 				tmt += `\n*FUN*\n`
-				tmt += `• ${prefix}artimimpi\n`
-				tmt += `• ${prefix}artinama\n`
-				tmt += `• ${prefix}ramaljodoh\n`
-				tmt += `• ${prefix}call\n\n`
+				tmt += `� ${prefix}artimimpi\n`
+				tmt += `� ${prefix}artinama\n`
+				tmt += `� ${prefix}ramaljodoh\n`
+				tmt += `� ${prefix}call\n\n`
 				tmt += `*Source Code:*\n`
 				tmt += `https://github.com/zennn08/example-bot`
 				await conn.reply(from, tmt, msg, { detectLinks: false, contextInfo: { mentionedJid: [sender], externalAdReply: { title: 'Example Bot', body: 'API', thumbnailUrl: 'https://justaqul.xyz/assets/img/profile/c507c50fcedc1ab55a9e8e436a2081d5.jpg', sourceUrl: 'https://justaqul.xyz' }}})
 			}
 			break
-			case prefix + 'searchmusic':
-			case prefix + 'whatmusic': {
+			case prefix + 'searchmusic': case prefix + 'whatmusic': {
 				if (msg.isQuotedAudio || msg.isQuotedVideo || msg.isQuotedDocument) {
 					let files = await conn.downloadMediaMessage(JSON.parse(JSON.stringify(msg).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo)
 					let bodyForm = new FormData()
@@ -197,8 +195,7 @@ module.exports = {
 				}
 			}
 			break
-			case prefix + 'listgrup':
-			case prefix + 'listgroup': {
+			case prefix + 'listgrup': case prefix + 'listgroup': {
 				let txt = conn.chats.array.filter(v => v.jid.endsWith('g.us')).map(v => `${v.name}\nID: ${v.jid}\nStatus: ${v.read_only ? 'Left' : 'Join'}\nUnread Message(s): ${v.count}\nLast Message: ${func.formatDate(v.t * 1000)}`).join`\n\n`
 				await conn.reply(from, '*List Groups:*\n\n' + txt, msg)
 			}
@@ -211,9 +208,7 @@ module.exports = {
 				await conn.reply(from, func.runtime(process.uptime()), msg)
 			}
 			break
-			case prefix + 'lirik':
-			case prefix + 'lyrics':
-			case prefix + 'lyric': {
+			case prefix + 'lirik': case prefix + 'lyrics': case prefix + 'lyric': {
 				try {
 					if (!q) return conn.reply(from, `Penggunaan ${command} judul lagu`, msg)
 					await conn.reply(from, global.db.mess.wait, msg)
@@ -236,7 +231,7 @@ module.exports = {
 				}
 			}
 			break
-			case prefix + 'term': {
+			case '$': case prefix + 'term': {
 				if (!isOwner) return
 				conn.reply(from, 'Executing...', msg)
 				let cp = require('child_process')
@@ -253,31 +248,27 @@ module.exports = {
 				}
 			}
 			break
-			case prefix + 's':
-			case prefix + 'sgif':
-			case prefix + 'stiker':
-			case prefix + 'sticker': {
+			case prefix + 's': case prefix + 'sgif': case prefix + 'stiker': case prefix + 'sticker': {
 				let pack = q.split`|`
 				if (msg.isImage || msg.isQuotedImage) {
 					let img = isQuotedMsg ? await quotedMsg.toBuffer() : await msg.toBuffer()
 					if (!img) return conn.reply(from, `Reply gambar dengan caption ${command}`, msg)
-					conn.sendImageAsSticker(from, img.toString('base64'), msg, { pack: pack[0] ? pack[0] : msg.pushname, author: pack[1] ? pack[1] : isGroup ? groupMetadata.subject : "︎ ︎ ︎" })
+					conn.sendImageAsSticker(from, img.toString('base64'), msg, { pack: pack[0] ? pack[0] : msg.pushname, author: pack[1] ? pack[1] : isGroup ? groupMetadata.subject : "  "})
 				} else if (msg.isVideo || msg.isQuotedVideo) {
 					//if (msg.message[msg.type].seconds > 11 || quotedMsg[quotedMsg.type].seconds > 11) return conn.reply(from, 'Maksimal 10 detik!', msg)
 					let img = isQuotedMsg ? await quotedMsg.toBuffer() : await msg.toBuffer()
 					if (!img) return conn.reply(from, `Reply video/gif dengan caption ${command}`, msg)
-					conn.sendMp4AsSticker(from, img.toString('base64'), msg, { pack: pack[0] ? pack[0] : msg.pushname, author: pack[1] ? pack[1] : isGroup ? groupMetadata.subject : "︎ ︎ ︎" })
+					conn.sendMp4AsSticker(from, img.toString('base64'), msg, { pack: pack[0] ? pack[0] : msg.pushname, author: pack[1] ? pack[1] : isGroup ? groupMetadata.subject : "  " })
 				} else if (msg.isQuotedSticker) {
 					let img = isQuotedMsg ? await quotedMsg.toBuffer() : await msg.toBuffer()
 					if (!img) return conn.reply(from, `Reply sticker dengan caption ${command}`, msg)
-					conn.sendImageAsSticker(from, img.toString('base64'), msg, { pack: pack[0] ? pack[0] : msg.pushname, author: pack[1] ? pack[1] : isGroup ? groupMetadata.subject : "︎ ︎ ︎" })
+					conn.sendImageAsSticker(from, img.toString('base64'), msg, { pack: pack[0] ? pack[0] : msg.pushname, author: pack[1] ? pack[1] : isGroup ? groupMetadata.subject : "  " })
 				} else {
 					conn.reply(from, 'Conversion failed', msg)
 				}
 			}
 			break
-			case prefix + 'tovideo':
-			case prefix + 'toimg': {
+			case prefix + 'tovideo': case prefix + 'toimg': {
 				if (msg.isQuotedSticker) {
 					let isAnimated = quotedMsg[quotedMsg.type].isAnimated
 					if (isAnimated) {
@@ -307,7 +298,7 @@ module.exports = {
 				}
 			}
 			break
-			case prefix + 'ytmp4': {
+			case prefix + 'ytv': case prefix + 'ytmp4': {
 				if (!q) return conn.reply(from, `Penggunaan ${command} link youtube`, msg)
 				if (!ytIdRegex.test(args[1])) return conn.reply(from, 'Harap berikan link yang benar', msg)
 				await conn.reply(from, global.db.mess.wait, msg)
@@ -340,8 +331,7 @@ module.exports = {
 					})
 			}
 			break*/
-			case prefix + 'play':
-			case prefix + 'ytmp3': {
+			case prefix + 'yta': case prefix + 'play': case prefix + 'ytmp3': {
 				if (!q) return conn.reply(from, `Penggunaan ${command} judul / link yt`, msg)
 				await conn.reply(from, global.db.mess.wait, msg)
 				await Axios.get('https://api.zeks.xyz/api/ytplaymp3/2?apikey=Nyarlathotep&q=' + q)
@@ -354,25 +344,22 @@ module.exports = {
 					})
 			}
 			break
-			case prefix + 'yts':
-			case prefix + 'ytsearch': {
+			case prefix + 'yts': case prefix + 'ytsearch': {
 				if (!q) return conn.reply(from, `Penggunaan ${command} query`, msg)
 				await conn.reply(from, global.db.mess.wait, msg)
 				let res = await yts(q)
-				let capt = `「 *YOUTUBE SEARCH* 」\n\n`
+				let capt = ``
 				for (let i of res.videos) {
-					capt += `*Title:* ${i.title}\n`
-					capt += `*Views:* ${i.views}\n`
-					capt += `*Uploaded:* ${i.ago}\n`
-					capt += `*Duration:* ${i.timestamp}\n`
+					capt += `*${i.title}* (${i.url})\n`
 					capt += `*By:* ${i.author.name}\n`
-					capt += `*Link:* ${i.url}\n\n`
+					capt += `*Duration:* ${i.timestamp}\n`
+					capt += `*Uploaded:* ${i.ago}\n`
+					capt += `=`.repeat(24) + `\n`
 				}
 				conn.reply(from, capt.trim(), msg, { contextInfo: { externalAdReply: { title: res.all[0].title, body: res.all[0].description, mediaType: 2, thumbnailUrl: res.all[0].image, mediaUrl: res.all[0].url }}})
 			}
 			break
-			case prefix + 'tiktok':
-			case prefix + 'tiktoknowm': {
+			case prefix + 'ttnowm': case prefix + 'tiktok': case prefix + 'tiktoknowm': {
 				if (!q) return conn.reply(from, `Penggunaan ${command} link tiktok`, msg)
 				if (!isUrl(args[1]) && !args[1].includes('tiktok.com')) return conn.reply(from, 'Harap berikan link yang benar', msg)
 				await conn.reply(from, global.db.mess.wait, msg)
@@ -440,8 +427,7 @@ module.exports = {
 					})
 			}
 			break
-			case prefix + 'pinterest':
-			case prefix + 'pin': {
+			case prefix + 'pinterest': case prefix + 'pin': {
 				if (!q) return conn.reply(from, `Penggunaan ${command} query`, msg)
 				await conn.reply(from, global.db.mess.wait, msg)
 				await api.pinterest(q)
@@ -452,8 +438,7 @@ module.exports = {
 					})
 			}
 			break
-			case prefix + 'ssweb':
-			case prefix + 'ss': {
+			case prefix + 'ssweb': case prefix + 'ss': {
 				if (!q) return conn.reply(from, `Penggunaan ${command} url`, msg)
 				if (!isUrl(args[1])) return conn.reply(from, 'Harap berikan link yang benar', msg)
 				await conn.reply(from, global.db.mess.wait, msg)
@@ -476,7 +461,7 @@ module.exports = {
 			        })
 			}
 			break*/
-			case prefix + 'igstalk': {
+			case prefix + 'stalkig': case prefix + 'igstalk': {
 				if (!q) return conn.reply(from, `Penggunaan ${command} username`, msg)
 				await conn.reply(from, global.db.mess.wait, msg)
 				await api.igstalk(q)
@@ -487,9 +472,7 @@ module.exports = {
 					})
 			}
 			break
-			case prefix + 'instagram':
-			case prefix + 'ig':
-			case prefix + 'igdl': {
+			case prefix + 'instagram': case prefix + 'ig': case prefix + 'igdl': {
 				if (!q) return conn.reply(from, `Penggunaan ${command} link ig`, msg)
 				if (!isUrl(args[1]) && !args[1].includes('instagram.com')) return conn.reply(from, 'Harap berikan link yang benar', msg)
 				await conn.reply(from, global.db.mess.wait, msg)
@@ -508,9 +491,7 @@ module.exports = {
 					})
 			}
 			break
-			case prefix + 'flower':
-			case prefix + 'shadow-text':
-			case prefix + 'write-text': {
+			case prefix + 'flower': case prefix + 'shadow-text': case prefix + 'write-text': {
 				if (!q) return conn.reply(from, `Penggunaan ${command} text`, msg)
 				await conn.reply(from, global.db.mess.wait, msg)
 				await api.photooxy(q, command.replace(prefix, ''))
@@ -543,8 +524,7 @@ module.exports = {
 					})
 			}
 			break
-			case prefix + 'ramaljodoh':
-			case prefix + 'ramalanjodoh': {
+			case prefix + 'ramaljodoh': case prefix + 'ramalanjodoh': {
 				if (!q) return conn.reply(from, `Penggunaan ${command} nama kamu | nama jodohmu`, msg)
 				if (!q.includes('|')) return conn.reply(from, `Penggunaan ${command} nama kamu | nama jodohmu`, msg)
 				if (q.split('|').length < 2) return conn.reply(from, `Penggunaan ${command} nama kamu | nama jodohmu`, msg)
@@ -572,6 +552,22 @@ module.exports = {
 					})
 			}
 			break
+			case prefix + 'nulis': case prefix + 'tulis': {
+				if (!q) return conn.reply(from, `Penggunaan ${command} teks`, msg)
+				await conn.reply(from, global.db.mess.wait, msg)
+				await conn.sendImage(from, `https://zenzapi.xyz/api/image/nulis?text=${encodeURI(q)}&apikey=Nyarlathotep`, '', msg)
+				.catch(err => {
+					console.log(err)
+					conn.reply(from, require('util').format(err), msg)
+				})
+			}
+			break
+			case prefix + 'del': case prefix + 'delete': {
+				if (!isQuotedMsg) return conn.reply(from, `Penggunaan ${command} reply chat bot`, msg)
+				if (!quotedMsg.fromMe) return conn.reply(from, `Tidak dapat menghapus chat org lain`, msg)
+				conn.deleteMessage(from, { id: quotedMsg.id, remoteJid: from, fromMe: true })
+			}
+			break
 			case prefix + 'jadibot': {
 				if (fromMe) return conn.reply(from, 'Tidak bisa jadibot di dalam bot', msg)
 				jadibot(conn, from)
@@ -583,9 +579,9 @@ module.exports = {
 			}
 			break
 			case prefix + 'listjadibot': {
-				let tekss = '「 *LIST JADIBOT* 」\n'
+				let tekss = '*LIST JADIBOT*\n\n'
 				for (let i of listjadibot) {
-					tekss += `*Nomor:* wa.me/${i.jid.split('@')[0]}\n*Nama:* ${i.name}\n*Device:* ${i.phone.device_manufacturer}\n*Model:* ${i.phone.device_model}\n\n`
+					tekss += `*Nomor:* ${i.name} wa.me/${i.jid.split('@')[0]}\n*Device:* ${i.phone.device_manufacturer}\n*Model:* ${i.phone.device_model}\n\n`
 				}
 				conn.reply(from, tekss, msg)
 			}
