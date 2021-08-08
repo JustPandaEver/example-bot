@@ -306,7 +306,7 @@ module.exports = {
 					.then(res => {
 						conn.sendImage(from, res.image, res.caption, msg)
 						let _thumb = {}
-						try { _thumb = { thumbnail: await (await fetch(res.image)).buffer() } }
+						try { _thumb = { thumbnail: await func.getBuffer(res.image) } }
 						catch (e) { }
 						conn.sendMessage(from, { url: res.video }, 'videoMessage', { quoted: msg, ..._thumb })
 					})
