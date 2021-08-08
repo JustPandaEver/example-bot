@@ -347,10 +347,8 @@ module.exports = {
 				if (!q) return conn.reply(from, `Penggunaan ${command} query`, msg)
 				await conn.reply(from, global.db.mess.wait, msg)
 				let { videos } = await yts(q)
-
 				let length = videos.length < 10 ? videos.length : 10
 				let capt = ``
-
 				for (let i = 0; i < length; i++) {
 					capt += `*${videos[i].title}* (${videos[i].url})\n`
 					capt += `*By:* ${videos[i].author.name}\n`
