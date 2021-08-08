@@ -305,10 +305,7 @@ module.exports = {
 				await api.ytmp4(args[1], args[2] ? args[2] : '360p')
 					.then(res => {
 						conn.sendImage(from, res.image, res.caption, msg)
-						let _thumb = {}
-						try { _thumb = { thumbnail: await func.getBuffer(res.image) } }
-						catch (e) { }
-						conn.sendMessage(from, { url: res.video }, 'videoMessage', { quoted: msg, ..._thumb })
+						conn.sendMessage(from, { url: res.video }, 'videoMessage', { quoted: msg, thumbnail: Buffer.alloc(0) })
 					})
 					.catch(err => {
 						console.log(err)
