@@ -120,7 +120,7 @@ module.exports = {
 				}
 				break
 			case prefix + 'menu': case prefix + 'help': {
-				let tmt = `Yo @${sender.split('@')[0]} \n\n`
+				let tmt = `Yo @${sender.split('@')[0]} 👋\n\n`
 				tmt += `*Tanggal:* ${tanggal}\n`
 				tmt += `*Waktu:* ${waktu.charAt(0).toUpperCase() + waktu.slice(1)} || ${time}\n`
 				tmt += `*Runtime Bot:* ${func.clockString(process.uptime())}\n\n`
