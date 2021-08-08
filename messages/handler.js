@@ -90,7 +90,7 @@ module.exports = {
 
 			const args = body.split(' ')
 			const command = body.toLowerCase().split(/ +/)[0] || ''
-			const prefix = /^[°•π÷×¶∆£¢€¥®™=|~!#$%^&.?/\\©^z+*@,;]/.test(command) ? command.match(/^[°•π÷×¶∆£¢€¥®™=|~!#$%^&.?/\\©^z+*@,;]/gi) : '-'
+			const prefix = /^[���׶������=|~!#$%^&.?/\\�^z+*@,;]/.test(command) ? command.match(/^[���׶������=|~!#$%^&.?/\\�^z+*,;]/gi) : '-'
 			const isCmd = command.startsWith(prefix)
 			const q = body.slice(command.length + 1, body.length)
 			const isOwner = fromMe || userData.isOwner
@@ -120,37 +120,37 @@ module.exports = {
 				}
 				break
 			case prefix + 'menu': case prefix + 'help': {
-				let tmt = `Yo @${sender.split('@')[0]} 👋\n\n`
+				let tmt = `Yo @${sender.split('@')[0]} \n\n`
 				tmt += `*Tanggal:* ${tanggal}\n`
 				tmt += `*Waktu:* ${waktu.charAt(0).toUpperCase() + waktu.slice(1)} || ${time}\n`
 				tmt += `*Runtime Bot:* ${func.clockString(process.uptime())}\n\n`
 				tmt += `*TOOLs*\n`
-				tmt += `• ${prefix}sticker\n`
-				tmt += `• ${prefix}toimg\n`
-				tmt += `• ${prefix}tovideo\n`
-				tmt += `• ${prefix}tomp3\n`
-				tmt += `• ${prefix}toptt\n`
-				tmt += `• ${prefix}ssweb\n`
+				tmt += `� ${prefix}sticker\n`
+				tmt += `� ${prefix}toimg\n`
+				tmt += `� ${prefix}tovideo\n`
+				tmt += `� ${prefix}tomp3\n`
+				tmt += `� ${prefix}toptt\n`
+				tmt += `� ${prefix}ssweb\n`
 				tmt += `\n*DOWNLOADER*\n`
-				tmt += `• ${prefix}play\n`
-				tmt += `• ${prefix}ytmp4\n`
-				tmt += `• ${prefix}ytmp3\n`
-				tmt += `• ${prefix}igdl\n`
-				tmt += `• ${prefix}tiktokwm\n`
-				tmt += `• ${prefix}tiktoknowm\n`
-				tmt += `• ${prefix}tiktokmusic\n`
+				tmt += `� ${prefix}play\n`
+				tmt += `� ${prefix}ytmp4\n`
+				tmt += `� ${prefix}ytmp3\n`
+				tmt += `� ${prefix}igdl\n`
+				tmt += `� ${prefix}tiktokwm\n`
+				tmt += `� ${prefix}tiktoknowm\n`
+				tmt += `� ${prefix}tiktokmusic\n`
 				tmt += `\n*SEARCH*\n`
-				tmt += `• ${prefix}pinterest\n`
-				tmt += `• ${prefix}lyrics\n`
-				tmt += `• ${prefix}google\n`
-				tmt += `• ${prefix}ytsearch\n`
-				tmt += `• ${prefix}whatmusic\n`
-				tmt += `• ${prefix}igstalk\n`
+				tmt += `� ${prefix}pinterest\n`
+				tmt += `� ${prefix}lyrics\n`
+				tmt += `� ${prefix}google\n`
+				tmt += `� ${prefix}ytsearch\n`
+				tmt += `� ${prefix}whatmusic\n`
+				tmt += `� ${prefix}igstalk\n`
 				tmt += `\n*FUN*\n`
-				tmt += `• ${prefix}artimimpi\n`
-				tmt += `• ${prefix}artinama\n`
-				tmt += `• ${prefix}ramaljodoh\n`
-				tmt += `• ${prefix}call\n\n`
+				tmt += `� ${prefix}artimimpi\n`
+				tmt += `� ${prefix}artinama\n`
+				tmt += `� ${prefix}ramaljodoh\n`
+				tmt += `� ${prefix}call\n\n`
 				tmt += `*Source Code:*\n`
 				tmt += `https://github.com/zennn08/example-bot`
 				await conn.reply(from, tmt, msg, { detectLinks: false, contextInfo: { mentionedJid: [sender], externalAdReply: { title: 'Example Bot', body: 'API', thumbnailUrl: 'https://justaqul.xyz/assets/img/profile/c507c50fcedc1ab55a9e8e436a2081d5.jpg', sourceUrl: 'https://justaqul.xyz' }}})
