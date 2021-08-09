@@ -34,7 +34,7 @@ global['db']['mess'] = {
 
 let conn;
 conn = new WAConnection();
-
+client = conn
 async function start(sesion) {
     console.log(color(figlet.textSync('Example Bot', 'Larry 3D'), 'cyan'))
     conn.logger.level = 'warn';
@@ -92,7 +92,11 @@ async function start(sesion) {
                 })
         })
     })
-
+    /*
+    conn.on('group-participants-update', async (anu) => {
+        
+    })
+    */
     conn.on('chat-update', async (msg) => {
         handler.chatUpdate(conn, msg)
     })
